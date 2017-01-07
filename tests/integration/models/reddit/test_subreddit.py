@@ -461,28 +461,6 @@ class TestSubredditModeration(IntegrationTest):
                 self.subreddit.mod.accept_invite()
             assert excinfo.value.error_type == 'NO_INVITE_FOUND'
 
-    def test_approve(self):
-        self.reddit.read_only = False
-        with self.recorder.use_cassette(
-                'TestSubredditModeration.test_approve'):
-            submission = self.reddit.submission('4b536h')
-            self.subreddit.mod.approve(submission)
-
-    def test_distinguish(self):
-        self.reddit.read_only = False
-        with self.recorder.use_cassette(
-                'TestSubredditModeration.test_distinguish'):
-            submission = self.reddit.submission('4b536h')
-            self.subreddit.mod.distinguish(submission)
-
-    @mock.patch('time.sleep', return_value=None)
-    def test_distinguish__sticky(self, _):
-        self.reddit.read_only = False
-        with self.recorder.use_cassette(
-                'TestSubredditModeration.test_distinguish__sticky'):
-            comment = Comment(self.reddit, 'dba9bzn')
-            self.subreddit.mod.distinguish(comment, sticky=True)
-
     def test_edited(self):
         self.reddit.read_only = False
         with self.recorder.use_cassette('TestSubredditModeration.test_edited'):
@@ -511,13 +489,6 @@ class TestSubredditModeration(IntegrationTest):
                 assert isinstance(item, Submission)
                 count += 1
             assert count > 0
-
-    def test_ignore_reports(self):
-        self.reddit.read_only = False
-        with self.recorder.use_cassette(
-                'TestSubredditModeration.test_ignore_reports'):
-            submission = self.reddit.submission('31ybt2')
-            self.subreddit.mod.ignore_reports(submission)
 
     def test_inbox(self):
         self.reddit.read_only = False
@@ -582,12 +553,6 @@ class TestSubredditModeration(IntegrationTest):
                 count += 1
             assert count > 0
 
-    def test_remove(self):
-        self.reddit.read_only = False
-        with self.recorder.use_cassette('TestSubredditModeration.test_remove'):
-            submission = self.reddit.submission('4b536h')
-            self.subreddit.mod.remove(submission, spam=True)
-
     def test_reports(self):
         self.reddit.read_only = False
         with self.recorder.use_cassette(
@@ -646,20 +611,6 @@ class TestSubredditModeration(IntegrationTest):
                 assert isinstance(item, Submission)
                 count += 1
             assert count > 0
-
-    def test_undistinguish(self):
-        self.reddit.read_only = False
-        with self.recorder.use_cassette(
-                'TestSubredditModeration.test_undistinguish'):
-            submission = self.reddit.submission('4b536h')
-            self.subreddit.mod.undistinguish(submission)
-
-    def test_unignore_reports(self):
-        self.reddit.read_only = False
-        with self.recorder.use_cassette(
-                'TestSubredditModeration.test_unignore_reports'):
-            submission = self.reddit.submission('31ybt2')
-            self.subreddit.mod.unignore_reports(submission)
 
     def test_unmoderated(self):
         self.reddit.read_only = False
